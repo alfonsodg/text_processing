@@ -1,0 +1,12 @@
+#bottle
+scikit-learn
+scipy
+gensim
+vincent
+#wordcloud
+nltk
+matplotlib
+pymongo
+#tweepy
+#simplejson
+#requests
