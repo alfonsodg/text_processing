@@ -226,7 +226,7 @@ def n_gram_counter(content, ngram_range=(1,4), stop_words=stop):
     return n_gram_count_data
 
 
-def n_gram_analyzer(content, ngram_range=(1,5), stop_words=stop):
+def n_gram_analyzer(content, ngram_range=(1,4), stop_words=stop):
     vectorizer = CountVectorizer(
         tokenizer=pre_process,
         lowercase=False,
