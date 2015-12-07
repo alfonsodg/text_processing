@@ -186,20 +186,43 @@ def n_gram_nltk(terms):
     return uni_gram_matrix.items(), bi_gram_matrix.items(), tri_gram_matrix.items()
 
 
-def n_gram_counter(content, ngram_range=(1,3), stop_words=stop):
+def n_gramer(content, stop_words=stop):
+    vectorizer = CountVectorizer(
+        tokenizer=pre_process,
+        lowercase=False,
+        stop_words=stop_words,
+        ngram_range=(1, 4)
+    )
+    try:
+        vector_count = vectorizer.fit_transform([content])
+        terms = vectorizer.get_feature_names()
+        freqs = vector_count.sum(axis=0).A1
+        n_gram_count = dict(zip(terms, freqs))
+        #n_gram_count = [(w, n_gram_count[w]) for w in sorted(n_gram_count, key=n_gram_count.get, reverse=True)]
+        n_gram_count_data = {}
+        [n_gram_count_data.setdefault(len(w.split()),[]).append(w) for w in sorted(n_gram_count, key=n_gram_count.get, reverse=True)]
+    except:
+        n_gram_count_data = {}
+    return n_gram_count_data
+
+
+def n_gram_counter(content, ngram_range=(1,4), stop_words=stop):
     vectorizer = CountVectorizer(
         tokenizer=pre_process,
         lowercase=False,
         stop_words=stop_words,
         ngram_range=ngram_range
     )
-    vector_count = vectorizer.fit_transform(content)
-    terms = vectorizer.get_feature_names()
-    freqs = vector_count.sum(axis=0).A1
-    n_gram_count = dict(zip(terms, freqs))
-    #n_gram_count = [(w, n_gram_count[w]) for w in sorted(n_gram_count, key=n_gram_count.get, reverse=True)]
-    n_gram_count_data = {}
-    [n_gram_count_data.setdefault(len(w.split()),[]).append((w,n_gram_count[w])) for w in sorted(n_gram_count, key=n_gram_count.get, reverse=True)]
+    try:
+        vector_count = vectorizer.fit_transform(content)
+        terms = vectorizer.get_feature_names()
+        freqs = vector_count.sum(axis=0).A1
+        n_gram_count = dict(zip(terms, freqs))
+        #n_gram_count = [(w, n_gram_count[w]) for w in sorted(n_gram_count, key=n_gram_count.get, reverse=True)]
+        n_gram_count_data = {}
+        [n_gram_count_data.setdefault(len(w.split()),[]).append((w,n_gram_count[w])) for w in sorted(n_gram_count, key=n_gram_count.get, reverse=True)]
+    except:
+        n_gram_count_data = {}
     return n_gram_count_data
 
 
